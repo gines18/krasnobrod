@@ -35,6 +35,19 @@ export default function News() {
     fetchPosts();
   }, []);
 
+  // New useEffect to initialize imageLoadingStates for new posts
+  useEffect(() => {
+    const newStates: Record<string, boolean> = {};
+    posts.forEach((post) => {
+      if (imageLoadingStates[post.id] === undefined) {
+        newStates[post.id] = true;
+      }
+    });
+    if (Object.keys(newStates).length > 0) {
+      setImageLoadingStates((prev) => ({ ...prev, ...newStates }));
+    }
+  }, [posts]);
+
   const fetchPosts = async () => {
     try {
       const { data, error } = await supabase
@@ -121,16 +134,7 @@ export default function News() {
   };
 
   const renderPost = ({ item }: { item: NewsPost }) => {
-    // Initialize loading state for this post if not exists
-    if (imageLoadingStates[item.id] === undefined) {
-      console.log(
-        'Initializing image loading state for post:',
-        item.id,
-        'with URL:',
-        item.image_url
-      );
-      setImageLoadingStates((prev) => ({ ...prev, [item.id]: true }));
-    }
+    // Removed setState call from render to avoid React warning
 
     return (
       <View style={styles.postCard}>
@@ -138,7 +142,7 @@ export default function News() {
           <View style={styles.typeTag}>
             <Text style={styles.typeText}>NEWS</Text>
           </View>
-          {item.user_id === user?.id && (
+          {isAdmin && (
             <View style={styles.postActions}>
               <TouchableOpacity
                 onPress={() => handleEdit(item)}
@@ -157,7 +161,7 @@ export default function News() {
         </View>
 
         <Text style={styles.postTitle}>{item.title}</Text>
-        <Text style={styles.postDescription}>{item.description}</Text>
+        <Text style={styles.postDescription}>{item.content}</Text>
 
         {item.image_url && (
           <View style={styles.imageContainer}>
@@ -205,12 +209,7 @@ export default function News() {
         )}
 
         <View style={styles.postMeta}>
-          {item.location && (
-            <View style={styles.metaItem}>
-              <MapPin size={16} color="#6b7280" />
-              <Text style={styles.metaText}>{item.location}</Text>
-            </View>
-          )}
+          {/* Removed location block because NewsPost type has no location property */}
           <View style={styles.metaItem}>
             <Clock size={16} color="#6b7280" />
             <Text style={styles.metaText}>

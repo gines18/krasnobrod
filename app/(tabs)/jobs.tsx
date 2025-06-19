@@ -42,6 +42,19 @@ export default function Jobs() {
     fetchPosts();
   }, []);
 
+  // New useEffect to initialize imageLoadingStates for new posts
+  useEffect(() => {
+    const newStates: Record<string, boolean> = {};
+    posts.forEach((post) => {
+      if (imageLoadingStates[post.id] === undefined) {
+        newStates[post.id] = true;
+      }
+    });
+    if (Object.keys(newStates).length > 0) {
+      setImageLoadingStates((prev) => ({ ...prev, ...newStates }));
+    }
+  }, [posts]);
+
   const fetchPosts = async () => {
     try {
       const { data, error } = await supabase
@@ -124,16 +137,7 @@ export default function Jobs() {
   };
 
   const renderPost = ({ item }: { item: JobPost }) => {
-    // Initialize loading state for this post if not exists
-    if (imageLoadingStates[item.id] === undefined) {
-      console.log(
-        'Initializing image loading state for post:',
-        item.id,
-        'with URL:',
-        item.image_url
-      );
-      setImageLoadingStates((prev) => ({ ...prev, [item.id]: true }));
-    }
+    // Removed setState call from render to avoid React warning
 
     return (
       <View style={styles.postCard}>
