@@ -235,7 +235,7 @@ export default function News() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Aktualności społeczności</Text>
+        <Text style={styles.headerTitle}>Aktualności</Text>
         {isAdmin && (
           <TouchableOpacity
             style={styles.addButton}

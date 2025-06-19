@@ -46,7 +46,7 @@ export default function Register() {
     } else {
       Alert.alert(
         'Success',
-        'Account created successfully! You can now sign in.',
+        'Konto zostało założone pomyślnie! Możesz się teraz zalogować.',
         [{ text: 'OK', onPress: () => router.replace('/(auth)/login') }]
       );
     }
