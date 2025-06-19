@@ -45,8 +45,10 @@ export default function Login() {
       >
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.formContainer}>
-            <Text style={styles.title}>Welcome Back</Text>
-            <Text style={styles.subtitle}>Sign in to your community account</Text>
+            <Text style={styles.title}>Witamy ponownie</Text>
+            <Text style={styles.subtitle}>
+              Zaloguj się do swojego konta społeczności
+            </Text>
 
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Email</Text>
@@ -54,7 +56,7 @@ export default function Login() {
                 style={styles.input}
                 value={email}
                 onChangeText={setEmail}
-                placeholder="Enter your email"
+                placeholder="Wpisz swój email"
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoComplete="email"
@@ -62,12 +64,12 @@ export default function Login() {
             </View>
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Password</Text>
+              <Text style={styles.label}>Hasło</Text>
               <TextInput
                 style={styles.input}
                 value={password}
                 onChangeText={setPassword}
-                placeholder="Enter your password"
+                placeholder="Wpisz swoje hasło"
                 secureTextEntry
                 autoComplete="password"
               />
@@ -79,7 +81,7 @@ export default function Login() {
               disabled={loading}
             >
               <Text style={styles.buttonText}>
-                {loading ? 'Signing In...' : 'Sign In'}
+                {loading ? 'Logowanie...' : 'Zaloguj się'}
               </Text>
             </TouchableOpacity>
 
@@ -89,7 +91,8 @@ export default function Login() {
                 onPress={() => router.push('/(auth)/register')}
               >
                 <Text style={styles.linkText}>
-                  Don't have an account? <Text style={styles.linkTextBold}>Sign Up</Text>
+                  Nie masz konta?{' '}
+                  <Text style={styles.linkTextBold}>Zarejestruj się</Text>
                 </Text>
               </TouchableOpacity>
 
@@ -98,7 +101,10 @@ export default function Login() {
                 onPress={() => router.push('/(auth)/admin-register')}
               >
                 <Text style={styles.adminLinkText}>
-                  Need admin access? <Text style={styles.adminLinkTextBold}>Admin Registration</Text>
+                  Potrzebujesz dostępu administratora?{' '}
+                  <Text style={styles.adminLinkTextBold}>
+                    Rejestracja administratora
+                  </Text>
                 </Text>
               </TouchableOpacity>
             </View>

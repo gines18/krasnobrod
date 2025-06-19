@@ -97,10 +97,10 @@ export default function Jobs() {
   };
 
   const handleDelete = async (postId: string) => {
-    Alert.alert('Delete Post', 'Are you sure you want to delete this post?', [
-      { text: 'Cancel', style: 'cancel' },
+      Alert.alert('Usuń wpis', 'Czy na pewno chcesz usunąć ten wpis?', [
+      { text: 'Anuluj', style: 'cancel' },
       {
-        text: 'Delete',
+        text: 'Usuń',
         style: 'destructive',
         onPress: async () => {
           try {
@@ -156,7 +156,7 @@ export default function Jobs() {
                 { color: item.type === 'offer' ? '#1e40af' : '#6b21a8' },
               ]}
             >
-              {item.type === 'offer' ? 'JOB OFFER' : 'JOB WANTED'}
+              {item.type === 'offer' ? 'OFERTA PRACY' : 'POSZUKIWANA PRACA'}
             </Text>
           </View>
           {item.user_id === user?.id && (
@@ -165,13 +165,13 @@ export default function Jobs() {
                 onPress={() => handleEdit(item)}
                 style={styles.editButton}
               >
-                <Text style={styles.editButtonText}>Edit</Text>
+                <Text style={styles.editButtonText}>Edytuj</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => handleDelete(item.id)}
                 style={styles.deleteButton}
               >
-                <Text style={styles.deleteButtonText}>Delete</Text>
+                <Text style={styles.deleteButtonText}>Usuń</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -190,7 +190,7 @@ export default function Jobs() {
             {imageErrorStates[item.id] ? (
               <View style={styles.imageErrorContainer}>
                 <ImageIcon size={32} color="#ef4444" />
-                <Text style={styles.imageErrorText}>Failed to load image</Text>
+        <Text style={styles.imageErrorText}>Nie udało się załadować obrazu</Text>
                 <TouchableOpacity
                   style={styles.retryButton}
                   onPress={() => {
@@ -210,7 +210,7 @@ export default function Jobs() {
                     }));
                   }}
                 >
-                  <Text style={styles.retryText}>Retry</Text>
+                  <Text style={styles.retryText}>Ponów próbę</Text>
                 </TouchableOpacity>
               </View>
             ) : (
@@ -272,7 +272,7 @@ export default function Jobs() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Jobs</Text>
+        <Text style={styles.headerTitle}>Oferty pracy</Text>
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => setShowForm(true)}

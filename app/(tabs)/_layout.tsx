@@ -41,10 +41,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="lost-found"
         options={{
-          title: 'Lost & Found',
-          tabBarIcon: ({ size, color }) => (
-            <Search size={size} color={color} />
-          ),
+          title: 'Zgubione i znalezione',
+          tabBarIcon: ({ size, color }) => <Search size={size} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -59,7 +57,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="news"
         options={{
-          title: 'News',
+          title: 'Aktualności',
           tabBarIcon: ({ size, color }) => (
             <Newspaper size={size} color={color} />
           ),
@@ -69,9 +67,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ size, color }) => (
-            <User size={size} color={color} />
-          ),
+          tabBarIcon: ({ size, color }) => <User size={size} color={color} />,
         }}
       />
     </Tabs>

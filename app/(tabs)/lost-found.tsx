@@ -31,7 +31,6 @@ export default function LostFound() {
   >({});
   const { user } = useAuth();
 
-
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -60,7 +59,7 @@ export default function LostFound() {
       setPosts(data || []);
     } catch (error) {
       console.error('Error fetching posts:', error);
-      Alert.alert('Error', 'Failed to load posts');
+      Alert.alert('Błąd', 'Nie udało się załadować wpisów');
     } finally {
       setLoading(false);
     }
@@ -86,15 +85,15 @@ export default function LostFound() {
       setEditingPost(null);
     } catch (error) {
       console.error('Error saving post:', error);
-      Alert.alert('Error', 'Failed to save post');
+      Alert.alert('Błąd', 'Nie udało się zapisać wpisu');
     }
   };
 
   const handleDelete = async (postId: string) => {
-    Alert.alert('Delete Post', 'Are you sure you want to delete this post?', [
-      { text: 'Cancel', style: 'cancel' },
+    Alert.alert('Usuń wpis', 'Czy na pewno chcesz usunąć ten wpis?', [
+      { text: 'Anuluj', style: 'cancel' },
       {
-        text: 'Delete',
+        text: 'Usuń',
         style: 'destructive',
         onPress: async () => {
           try {
@@ -106,7 +105,7 @@ export default function LostFound() {
             fetchPosts();
           } catch (error) {
             console.error('Error deleting post:', error);
-            Alert.alert('Error', 'Failed to delete post');
+            Alert.alert('Błąd', 'Nie udało się usunąć wpisu');
           }
         },
       },
@@ -148,7 +147,7 @@ export default function LostFound() {
                 { color: item.type === 'lost' ? '#92400e' : '#047857' },
               ]}
             >
-              {item.type === 'lost' ? 'LOST' : 'FOUND'}
+              {item.type === 'lost' ? 'ZGUBIONE' : 'ZNALAZIONE'}
             </Text>
           </View>
           {item.user_id === user?.id && (
@@ -157,13 +156,13 @@ export default function LostFound() {
                 onPress={() => handleEdit(item)}
                 style={styles.editButton}
               >
-                <Text style={styles.editButtonText}>Edit</Text>
+                <Text style={styles.editButtonText}>Edytuj</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => handleDelete(item.id)}
                 style={styles.deleteButton}
               >
-                <Text style={styles.deleteButtonText}>Delete</Text>
+                <Text style={styles.deleteButtonText}>Usuń</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -182,7 +181,9 @@ export default function LostFound() {
             {imageErrorStates[item.id] ? (
               <View style={styles.imageErrorContainer}>
                 <ImageIcon size={32} color="#ef4444" />
-                <Text style={styles.imageErrorText}>Failed to load image</Text>
+                <Text style={styles.imageErrorText}>
+                  Nie udało się załadować obrazu
+                </Text>
                 <TouchableOpacity
                   style={styles.retryButton}
                   onPress={() => {
@@ -202,7 +203,7 @@ export default function LostFound() {
                     }));
                   }}
                 >
-                  <Text style={styles.retryText}>Retry</Text>
+                  <Text style={styles.retryText}>Ponów próbę</Text>
                 </TouchableOpacity>
               </View>
             ) : (
@@ -258,7 +259,7 @@ export default function LostFound() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Lost & Found</Text>
+        <Text style={styles.headerTitle}>Zgubione i znalezione</Text>
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => setShowForm(true)}

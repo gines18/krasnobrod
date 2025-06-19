@@ -59,7 +59,7 @@ export default function News() {
       setPosts(data || []);
     } catch (error) {
       console.error('Error fetching posts:', error);
-      Alert.alert('Error', 'Failed to load news');
+      Alert.alert('Błąd', 'Nie udało się załadować aktualności');
     } finally {
       setLoading(false);
     }
@@ -85,35 +85,31 @@ export default function News() {
       setEditingPost(null);
     } catch (error) {
       console.error('Error saving post:', error);
-      Alert.alert('Error', 'Failed to save news post');
+      Alert.alert('Błąd', 'Nie udało się zapisać wpisu');
     }
   };
 
   const handleDelete = async (postId: string) => {
-    Alert.alert(
-      'Delete News',
-      'Are you sure you want to delete this news post?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              const { error } = await supabase
-                .from('news_posts')
-                .delete()
-                .eq('id', postId);
-              if (error) throw error;
-              fetchPosts();
-            } catch (error) {
-              console.error('Error deleting post:', error);
-              Alert.alert('Error', 'Failed to delete news post');
-            }
-          },
+    Alert.alert('Usuń aktualność', 'Czy na pewno chcesz usunąć ten wpis?', [
+      { text: 'Anuluj', style: 'cancel' },
+      {
+        text: 'Usuń',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            const { error } = await supabase
+              .from('news_posts')
+              .delete()
+              .eq('id', postId);
+            if (error) throw error;
+            fetchPosts();
+          } catch (error) {
+            console.error('Error deleting post:', error);
+            Alert.alert('Błąd', 'Nie udało się usunąć wpisu');
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const handleEdit = (post: NewsPost) => {
@@ -140,7 +136,7 @@ export default function News() {
       <View style={styles.postCard}>
         <View style={styles.postHeader}>
           <View style={styles.typeTag}>
-            <Text style={styles.typeText}>NEWS</Text>
+            <Text style={styles.typeText}>AKTUALNOŚCI</Text>
           </View>
           {isAdmin && (
             <View style={styles.postActions}>
@@ -148,13 +144,13 @@ export default function News() {
                 onPress={() => handleEdit(item)}
                 style={styles.editButton}
               >
-                <Text style={styles.editButtonText}>Edit</Text>
+                <Text style={styles.editButtonText}>Edytuj</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => handleDelete(item.id)}
                 style={styles.deleteButton}
               >
-                <Text style={styles.deleteButtonText}>Delete</Text>
+                <Text style={styles.deleteButtonText}>Usuń</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -173,7 +169,9 @@ export default function News() {
             {imageErrorStates[item.id] ? (
               <View style={styles.imageErrorContainer}>
                 <ImageIcon size={32} color="#ef4444" />
-                <Text style={styles.imageErrorText}>Failed to load image</Text>
+                <Text style={styles.imageErrorText}>
+                  Nie udało się załadować obrazu
+                </Text>
                 <TouchableOpacity
                   style={styles.retryButton}
                   onPress={() => {
@@ -193,7 +191,7 @@ export default function News() {
                     }));
                   }}
                 >
-                  <Text style={styles.retryText}>Retry</Text>
+                  <Text style={styles.retryText}>Ponów próbę</Text>
                 </TouchableOpacity>
               </View>
             ) : (
@@ -237,7 +235,7 @@ export default function News() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Community News</Text>
+        <Text style={styles.headerTitle}>Aktualności społeczności</Text>
         {isAdmin && (
           <TouchableOpacity
             style={styles.addButton}
@@ -251,7 +249,7 @@ export default function News() {
       {!isAdmin && (
         <View style={styles.infoCard}>
           <Text style={styles.infoText}>
-            Community news and announcements from administrators
+            Aktualności i ogłoszenia od administratorów
           </Text>
         </View>
       )}
