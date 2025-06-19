@@ -12,8 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { X } from 'lucide-react-native';
-import { ImagePicker } from './ImagePicker';
-import { uploadImage, deleteImage } from '@/lib/supabase';
+
 import { useAuth } from '@/contexts/AuthContext';
 
 interface NewsFormProps {
@@ -30,7 +29,7 @@ export function NewsForm({ initialData, onSubmit, onCancel }: NewsFormProps) {
 
   const handleSubmit = async () => {
     if (!title.trim() || !content.trim()) {
-      Alert.alert('Error', 'Please fill in all required fields');
+      Alert.alert('Błąd', 'Proszę wypełnić wszystkie wymagane pola');
       return;
     }
 
@@ -42,7 +41,7 @@ export function NewsForm({ initialData, onSubmit, onCancel }: NewsFormProps) {
         content: content.trim(),
       });
     } catch (error) {
-      Alert.alert('Error', 'Failed to save news post. Please try again.');
+      Alert.alert('Błąd', 'Nie udało się zapisać wpisu. Spróbuj ponownie.');
     } finally {
       setUploading(false);
     }
@@ -56,7 +55,7 @@ export function NewsForm({ initialData, onSubmit, onCancel }: NewsFormProps) {
       >
         <View style={styles.header}>
           <Text style={styles.headerTitle}>
-            {initialData ? 'Edit News Post' : 'New News Post'}
+            {initialData ? 'Edytuj aktualność' : 'Nowa aktualność'}
           </Text>
           <TouchableOpacity onPress={onCancel} style={styles.closeButton}>
             <X size={24} color="#6b7280" />
@@ -68,23 +67,23 @@ export function NewsForm({ initialData, onSubmit, onCancel }: NewsFormProps) {
           contentContainerStyle={styles.scrollContent}
         >
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Title *</Text>
+            <Text style={styles.label}>Tytuł *</Text>
             <TextInput
               style={styles.input}
               value={title}
               onChangeText={setTitle}
-              placeholder="Enter news headline"
+              placeholder="Wpisz nagłówek aktualności"
               multiline={false}
             />
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Content *</Text>
+            <Text style={styles.label}>Treść *</Text>
             <TextInput
               style={[styles.input, styles.textArea]}
               value={content}
               onChangeText={setContent}
-              placeholder="Write the news content here..."
+              placeholder="Napisz tutaj treść aktualności..."
               multiline
               numberOfLines={8}
             />
@@ -96,7 +95,7 @@ export function NewsForm({ initialData, onSubmit, onCancel }: NewsFormProps) {
               onPress={onCancel}
               disabled={uploading}
             >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
+              <Text style={styles.cancelButtonText}>Anuluj</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[
@@ -109,7 +108,11 @@ export function NewsForm({ initialData, onSubmit, onCancel }: NewsFormProps) {
               disabled={!title.trim() || !content.trim() || uploading}
             >
               <Text style={styles.submitButtonText}>
-                {uploading ? 'Saving...' : initialData ? 'Update' : 'Publish'}
+                {uploading
+                  ? 'Zapisywanie...'
+                  : initialData
+                  ? 'Aktualizuj'
+                  : 'Opublikuj'}
               </Text>
             </TouchableOpacity>
           </View>

@@ -12,8 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { X } from 'lucide-react-native';
-import { ImagePicker } from './ImagePicker';
-import { uploadImage, deleteImage } from '@/lib/supabase';
+
 import { useAuth } from '@/contexts/AuthContext';
 
 interface PostFormProps {
@@ -48,7 +47,7 @@ export function PostForm({
 
   const handleSubmit = async () => {
     if (!title.trim() || !description.trim()) {
-      Alert.alert('Error', 'Please fill in all required fields');
+      Alert.alert('Błąd', 'Proszę wypełnić wszystkie wymagane pola');
       return;
     }
 
@@ -69,7 +68,7 @@ export function PostForm({
 
       onSubmit(data);
     } catch (error) {
-      Alert.alert('Error', 'Failed to save post. Please try again.');
+      Alert.alert('Błąd', 'Nie udało się zapisać wpisu. Spróbuj ponownie.');
     } finally {
       setUploading(false);
     }
@@ -78,21 +77,25 @@ export function PostForm({
   const getTypeOptions = () => {
     if (type === 'lost_found') {
       return [
-        { value: 'lost', label: 'Lost Item' },
-        { value: 'found', label: 'Found Item' },
+        { value: 'lost', label: 'Zgubione' },
+        { value: 'found', label: 'Znalezione' },
       ];
     }
     return [
-      { value: 'offer', label: 'Job Offer' },
-      { value: 'request', label: 'Job Request' },
+      { value: 'offer', label: 'Oferta pracy' },
+      { value: 'request', label: 'Poszukiwanie pracy' },
     ];
   };
 
   const getTitle = () => {
     if (initialData) {
-      return type === 'lost_found' ? 'Edit Lost & Found Post' : 'Edit Job Post';
+      return type === 'lost_found'
+        ? 'Edytuj ogłoszenie Zgubione i znalezione'
+        : 'Edytuj ogłoszenie o pracę';
     }
-    return type === 'lost_found' ? 'New Lost & Found Post' : 'New Job Post';
+    return type === 'lost_found'
+      ? 'Nowe ogłoszenie'
+      : 'Nowe ogłoszenie o pracę';
   };
 
   return (
@@ -135,57 +138,57 @@ export function PostForm({
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Title *</Text>
+            <Text style={styles.label}>Tytuł *</Text>
             <TextInput
               style={styles.input}
               value={title}
               onChangeText={setTitle}
-              placeholder="Enter a descriptive title"
+              placeholder="Wpisz opisowy tytuł"
               multiline={false}
             />
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Description *</Text>
+            <Text style={styles.label}>Opis *</Text>
             <TextInput
               style={[styles.input, styles.textArea]}
               value={description}
               onChangeText={setDescription}
-              placeholder="Provide detailed information"
+              placeholder="Podaj szczegółowe informacje"
               multiline
               numberOfLines={4}
             />
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Location</Text>
+            <Text style={styles.label}>Lokalizacja</Text>
             <TextInput
               style={styles.input}
               value={location}
               onChangeText={setLocation}
-              placeholder="Where was it lost/found or job location"
+              placeholder="Gdzie zgubiono/znaleziono lub lokalizacja pracy"
             />
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Contact Information</Text>
+            <Text style={styles.label}>Dane kontaktowe</Text>
             <TextInput
               style={styles.input}
               value={contactInfo}
               onChangeText={setContactInfo}
-              placeholder="Phone number or email"
+              placeholder="Numer telefonu lub email"
               keyboardType="email-address"
             />
           </View>
 
           {type === 'job' && (
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Salary Range</Text>
+              <Text style={styles.label}>Zakres wynagrodzenia</Text>
               <TextInput
                 style={styles.input}
                 value={salaryRange}
                 onChangeText={setSalaryRange}
-                placeholder="e.g., $15-20/hour or $50,000-60,000/year"
+                placeholder="np. 15-20 zł/godz. lub 50 000-60 000 zł/rok"
               />
             </View>
           )}
@@ -196,7 +199,7 @@ export function PostForm({
               onPress={onCancel}
               disabled={uploading}
             >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
+              <Text style={styles.cancelButtonText}>Anuluj</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[
@@ -209,7 +212,11 @@ export function PostForm({
               disabled={!title.trim() || !description.trim() || uploading}
             >
               <Text style={styles.submitButtonText}>
-                {uploading ? 'Saving...' : initialData ? 'Update' : 'Post'}
+                {uploading
+                  ? 'Zapisywanie...'
+                  : initialData
+                  ? 'Aktualizuj'
+                  : 'Dodaj'}
               </Text>
             </TouchableOpacity>
           </View>

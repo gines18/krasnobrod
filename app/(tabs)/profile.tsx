@@ -8,7 +8,14 @@ import {
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { User, Mail, Shield, LogOut, Trash2, TriangleAlert as AlertTriangle } from 'lucide-react-native';
+import {
+  User,
+  Mail,
+  Shield,
+  LogOut,
+  Trash2,
+  TriangleAlert as AlertTriangle,
+} from 'lucide-react-native';
 import { useAuth } from '@/contexts/AuthContext';
 import { DeleteAccountModal } from '@/components/DeleteAccountModal';
 import { router } from 'expo-router';
@@ -18,31 +25,27 @@ export default function Profile() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleSignOut = async () => {
-    Alert.alert(
-      'Sign Out',
-      'Are you sure you want to sign out?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Sign Out',
-          style: 'destructive',
-          onPress: async () => {
-            await signOut();
-            router.replace('/(auth)/login');
-          },
+    Alert.alert('Wyloguj się', 'Czy na pewno chcesz się wylogować?', [
+      { text: 'Anuluj', style: 'cancel' },
+      {
+        text: 'Wyloguj się',
+        style: 'destructive',
+        onPress: async () => {
+          await signOut();
+          router.replace('/(auth)/login');
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const handleDeleteAccount = () => {
     Alert.alert(
-      'Delete Account',
-      'Are you sure you want to permanently delete your account? This action cannot be undone.',
+      'Usuń konto',
+      'Czy na pewno chcesz trwale usunąć swoje konto? Ta operacja jest nieodwracalna.',
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: 'Anuluj', style: 'cancel' },
         {
-          text: 'Continue',
+          text: 'Kontynuuj',
           style: 'destructive',
           onPress: () => setShowDeleteModal(true),
         },
@@ -52,23 +55,19 @@ export default function Profile() {
 
   const handleDeleteSuccess = () => {
     setShowDeleteModal(false);
-    Alert.alert(
-      'Account Deleted',
-      'Your account has been permanently deleted.',
-      [
-        {
-          text: 'OK',
-          onPress: () => router.replace('/(auth)/login'),
-        },
-      ]
-    );
+    Alert.alert('Konto usunięte', 'Twoje konto zostało trwale usunięte.', [
+      {
+        text: 'OK',
+        onPress: () => router.replace('/(auth)/login'),
+      },
+    ]);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Profile</Text>
+          <Text style={styles.headerTitle}>Profil</Text>
         </View>
 
         <View style={styles.profileCard}>
@@ -90,12 +89,12 @@ export default function Profile() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Account Information</Text>
-          
+          <Text style={styles.sectionTitle}>Informacje o koncie</Text>
+
           <View style={styles.infoItem}>
             <View style={styles.infoLabel}>
               <Mail size={20} color="#6b7280" />
-              <Text style={styles.infoLabelText}>Email Address</Text>
+              <Text style={styles.infoLabelText}>Adres email</Text>
             </View>
             <Text style={styles.infoValue}>{user?.email}</Text>
           </View>
@@ -103,66 +102,81 @@ export default function Profile() {
           <View style={styles.infoItem}>
             <View style={styles.infoLabel}>
               <User size={20} color="#6b7280" />
-              <Text style={styles.infoLabelText}>Account Type</Text>
+              <Text style={styles.infoLabelText}>Typ konta</Text>
             </View>
             <Text style={styles.infoValue}>
-              {isAdmin ? 'Administrator' : 'Community Member'}
+              {isAdmin ? 'Administrator' : 'Użytkownik społeczności'}
             </Text>
           </View>
 
           <View style={styles.infoItem}>
             <View style={styles.infoLabel}>
               <Shield size={20} color="#6b7280" />
-              <Text style={styles.infoLabelText}>Join Date</Text>
+              <Text style={styles.infoLabelText}>Data dołączenia</Text>
             </View>
             <Text style={styles.infoValue}>
-              {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'Unknown'}
+              {user?.created_at
+                ? new Date(user.created_at).toLocaleDateString()
+                : 'Unknown'}
             </Text>
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Permissions</Text>
-          
+          <Text style={styles.sectionTitle}>Uprawnienia</Text>
+
           <View style={styles.permissionItem}>
-            <Text style={styles.permissionText}>• Create and manage Lost & Found posts</Text>
+            <Text style={styles.permissionText}>
+              • Tworzenie i zarządzanie ogłoszeniami Zgubione i znalezione
+            </Text>
           </View>
           <View style={styles.permissionItem}>
-            <Text style={styles.permissionText}>• Create and manage Job posts</Text>
+            <Text style={styles.permissionText}>
+              • Tworzenie i zarządzanie ogłoszeniami o pracę
+            </Text>
           </View>
           <View style={styles.permissionItem}>
-            <Text style={styles.permissionText}>• View community news</Text>
+            <Text style={styles.permissionText}>
+              • Przeglądanie aktualności społeczności
+            </Text>
           </View>
           {isAdmin && (
             <View style={styles.permissionItem}>
               <Text style={[styles.permissionText, styles.adminPermission]}>
-                • Manage community news and announcements
+                • Zarządzanie aktualnościami i ogłoszeniami społeczności
               </Text>
             </View>
           )}
         </View>
 
         <View style={styles.actionsSection}>
-          <Text style={styles.sectionTitle}>Account Actions</Text>
-          
-          <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
+          <Text style={styles.sectionTitle}>Akcje na koncie</Text>
+
+          <TouchableOpacity
+            style={styles.signOutButton}
+            onPress={handleSignOut}
+          >
             <LogOut size={20} color="white" />
-            <Text style={styles.signOutText}>Sign Out</Text>
+            <Text style={styles.signOutText}>Wyloguj się</Text>
           </TouchableOpacity>
 
           <View style={styles.dangerZone}>
             <View style={styles.dangerHeader}>
               <AlertTriangle size={20} color="#dc2626" />
-              <Text style={styles.dangerTitle}>Danger Zone</Text>
+              <Text style={styles.dangerTitle}>Strefa zagrożenia</Text>
             </View>
-            
-            <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteAccount}>
+
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={handleDeleteAccount}
+            >
               <Trash2 size={20} color="#dc2626" />
-              <Text style={styles.deleteButtonText}>Delete Account</Text>
+              <Text style={styles.deleteButtonText}>Usuń konto</Text>
             </TouchableOpacity>
-            
+
             <Text style={styles.deleteWarning}>
-              Permanently delete your account and all associated data. This action cannot be undone.
+              Trwale usuń swoje konto i wszystkie powiązane dane. Ta operacja
+              jest nieodwracalna.
             </Text>
           </View>
         </View>
